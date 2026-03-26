@@ -17,6 +17,12 @@ body,
   overflow-x: hidden;
 }
 
+html,
+body {
+  height: 100%;
+  overscroll-behavior-y: none;
+}
+
 /* Hide the visible right-side scrollbar but keep page scrollable */
 html,
 body {
@@ -36,6 +42,9 @@ body {
   background: radial-gradient(circle at top right, #f8eee8 0%, #fcf8f5 38%, #fbf7f3 100%);
   line-height: 1.7;
   letter-spacing: 0.2px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

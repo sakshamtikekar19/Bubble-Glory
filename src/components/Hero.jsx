@@ -66,7 +66,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen pt-36 md:pt-44 pb-16 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 overflow-hidden">
+    <section className="relative min-h-screen pt-36 md:pt-44 pb-16 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
       {/* Left Content */}
       <motion.div
         initial="initial"
