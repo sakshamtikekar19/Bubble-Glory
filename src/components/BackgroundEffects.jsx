@@ -1,7 +1,23 @@
-import React, { useMemo } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useEffect, useMemo, useState } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 
 const BackgroundEffects = () => {
+  const reduceMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    if (mq.addEventListener) {
+      mq.addEventListener('change', update);
+      return () => mq.removeEventListener('change', update);
+    }
+    mq.addListener(update);
+    return () => mq.removeListener(update);
+  }, []);
+
+  const calm = reduceMotion || isMobile;
   const { scrollY } = useScroll();
   
   // Parallax movement for different layers
@@ -12,37 +28,43 @@ const BackgroundEffects = () => {
   const premiumEase = [0.16, 1, 0.3, 1];
 
   // Keep generated particles stable to avoid rerender jitter.
-  const bubbles = useMemo(
-    () =>
-      Array.from({ length: 12 }).map((_, i) => ({
-        id: i,
-        size: Math.random() * 48 + 20,
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        duration: Math.random() * 4 + 8, // 8-12s loop
-        delay: Math.random() * 4,
-        xShift: Math.random() * 16 - 8,
-        yShift: Math.random() * 18 - 9,
-        color: i % 2 === 0 ? 'rgba(232, 207, 196, 0.16)' : 'rgba(245, 233, 226, 0.14)',
-        layer: i % 3,
-      })),
-    []
-  );
+  const bubbles = useMemo(() => {
+    const count = calm ? 8 : 12;
+    const shiftScale = calm ? 0.45 : 1;
+    const durationMin = calm ? 10 : 8;
+    const durationMax = calm ? 14 : 12;
 
-  const petals = useMemo(
-    () =>
-      Array.from({ length: 6 }).map((_, i) => ({
-        id: i,
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        duration: Math.random() * 4 + 9,
-        delay: Math.random() * 3,
-        xShift: Math.random() * 20 - 10,
-      })),
-    []
-  );
+    return Array.from({ length: count }).map((_, i) => ({
+      id: i,
+      size: Math.random() * 40 + 18,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      duration: Math.random() * (durationMax - durationMin) + durationMin,
+      delay: Math.random() * (calm ? 3 : 4),
+      xShift: (Math.random() * 16 - 8) * shiftScale,
+      yShift: (Math.random() * 18 - 9) * shiftScale,
+      color:
+        i % 2 === 0 ? 'rgba(232, 207, 196, 0.14)' : 'rgba(245, 233, 226, 0.12)',
+      layer: i % 3,
+    }));
+  }, [calm]);
+
+  const petals = useMemo(() => {
+    const count = calm ? 3 : 6;
+    const shiftScale = calm ? 0.35 : 1;
+    return Array.from({ length: count }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      duration: Math.random() * (calm ? 4 : 4) + (calm ? 12 : 9),
+      delay: Math.random() * (calm ? 2.5 : 3),
+      xShift: (Math.random() * 20 - 10) * shiftScale,
+    }));
+  }, [calm]);
 
   const getY = (layer) => {
+    // On mobile / reduced-motion, don't bind to scroll-linked MotionValues.
+    if (calm) return 0;
     if (layer === 0) return y1;
     if (layer === 1) return y2;
     return y3;
@@ -87,7 +109,7 @@ const BackgroundEffects = () => {
             y: getY(petal.id % 3)
           }}
           animate={{
-            rotate: [0, 12, 0],
+            rotate: calm ? [0, 6, 0] : [0, 12, 0],
             x: [0, petal.xShift, 0],
           }}
           transition={{
