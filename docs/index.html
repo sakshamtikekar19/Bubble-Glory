@@ -9,16 +9,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <title>Bubble and Glory | Luxury Handmade Soaps</title>
     <script>
-      // If hosted on GitHub Pages, route visitors to the built assets folder.
-      // Keep local development on Vite (localhost).
-      // Avoid redirect loops when the visitor is already on /docs/.
-      if (
-        !location.hostname.includes('localhost') &&
-        !location.hostname.includes('127.0.0.1') &&
-        !location.pathname.includes('/docs')
-      ) {
-        window.location.replace('./docs/');
-      }
+      // If hosted on GitHub Pages, we may be served the *dev* root index.html.
+      // In that case, route to the built output folder (`/docs/`).
+      // If GitHub Pages is already serving the *built* index.html at the root,
+      // the built asset tags exist and we should NOT redirect (keeps URL clean).
+      (function () {
+        const isLocal =
+          location.hostname.includes('localhost') || location.hostname.includes('127.0.0.1');
+        const alreadyOnDocs = location.pathname.includes('/docs');
+        if (isLocal || alreadyOnDocs) return;
+
+        // Defer the check until the head/body are parsed so we can detect
+        // whether the built `./assets/...` tags are present.
+        window.addEventListener('DOMContentLoaded', function () {
+          const hasBuiltAssets =
+            document.querySelector('script[src^="./assets/"], link[href^="./assets/"]') ||
+            document.querySelector('script[src*="/assets/"], link[href*="/assets/"]');
+
+          if (!hasBuiltAssets) {
+            window.location.replace('./docs/');
+          }
+        });
+      })();
     </script>
     <script type="module" crossorigin src="./assets/index-BwU_2QQ9.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-DIJWKbJe.css">
