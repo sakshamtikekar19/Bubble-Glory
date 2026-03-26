@@ -8,6 +8,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <title>Bubble and Glory | Luxury Handmade Soaps</title>
+    <script>
+      // If hosted on GitHub Pages, route visitors to the built assets folder.
+      // Keep local development on Vite (localhost).
+      if (
+        !location.hostname.includes('localhost') &&
+        !location.hostname.includes('127.0.0.1')
+      ) {
+        window.location.replace('./docs/');
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
