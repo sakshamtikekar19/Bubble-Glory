@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ShoppingBag, Menu, Sparkles } from 'lucide-react';
 
 const Navbar = ({ cartCount, onCartClick }) => {
@@ -7,10 +7,33 @@ const Navbar = ({ cartCount, onCartClick }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
   const premiumEase = [0.16, 1, 0.3, 1];
+  const reduceMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
   
   const lastScrollY = React.useRef(0);
 
   useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+
+    if (mq.addEventListener) {
+      mq.addEventListener('change', update);
+      return () => mq.removeEventListener('change', update);
+    }
+    mq.addListener(update);
+    return () => mq.removeListener(update);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile || reduceMotion) {
+      // Prevent scroll-linked translate/opacity toggling on mobile
+      // (it can cause visible jitter / "stuck" feel).
+      setIsHidden(false);
+      setIsScrolled(false);
+      return undefined;
+    }
+
     return scrollY.onChange((latest) => {
       const direction = latest > lastScrollY.current ? 'down' : 'up';
       if (latest > 100 && direction === 'down') {
@@ -27,14 +50,16 @@ const Navbar = ({ cartCount, onCartClick }) => {
       
       lastScrollY.current = latest;
     });
-  }, [scrollY]);
+  }, [scrollY, isMobile, reduceMotion]);
+
+  const shouldHide = isHidden && !isMobile && !reduceMotion;
 
   return (
     <div className="fixed top-0 left-0 w-full z-50">
       {/* Announcement Bar */}
       <motion.div 
         className="bg-bubblegum text-white px-2 sm:px-3 py-2 text-center font-medium flex items-center justify-center gap-1 sm:gap-2"
-        animate={{ opacity: isHidden ? 0 : 1, y: isHidden ? -40 : 0 }}
+        animate={{ opacity: shouldHide ? 0 : 1, y: shouldHide ? -40 : 0 }}
         transition={{ duration: 0.9, ease: premiumEase }}
       >
         <Sparkles size={14} />
@@ -47,7 +72,7 @@ const Navbar = ({ cartCount, onCartClick }) => {
         className={`w-full px-6 md:px-12 py-4 flex items-center justify-between font-sans text-[14px] tracking-[1px] uppercase text-[#1A1A1A] transition-all duration-300 ${
           isScrolled ? 'glass shadow-sm py-3' : 'bg-transparent'
         }`}
-        animate={{ y: isHidden ? -100 : 0 }}
+        animate={{ y: shouldHide ? -100 : 0 }}
         transition={{ duration: 0.9, ease: premiumEase }}
         style={{ borderBottom: isScrolled ? '1px solid rgba(212, 175, 55, 0.1)' : 'none' }}
       >
