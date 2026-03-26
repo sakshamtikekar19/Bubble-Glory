@@ -1,25 +1,46 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
-import confetti from 'canvas-confetti';
 
 const CartDrawer = ({ items, onClose }) => {
-  useEffect(() => {
-    if (items.length > 0) {
-      const scalar = 2;
-      const bubble = confetti.shapeFromText({ text: '🫧', scalar });
+  const hasPoppedForCount = useRef(0);
 
-      confetti({
-        shapes: [bubble, 'circle'],
-        particleCount: 40,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#E6E6FA', '#F0FFF0', '#FFC1CC', '#FFD1DC'],
-        ticks: 200,
-        gravity: 0.8,
-        scalar: 1.2,
-      });
-    }
+  useEffect(() => {
+    // Lazy-load confetti so it doesn't slow initial page load.
+    // Only run when item count increases.
+    if (items.length <= 0) return;
+    if (items.length <= hasPoppedForCount.current) return;
+
+    hasPoppedForCount.current = items.length;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const mod = await import('canvas-confetti');
+        if (cancelled) return;
+
+        const confetti = mod.default ?? mod;
+        const scalar = 2;
+        const bubble = confetti.shapeFromText({ text: '🫧', scalar });
+
+        confetti({
+          shapes: [bubble, 'circle'],
+          particleCount: 40,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#E6E6FA', '#F0FFF0', '#FFC1CC', '#FFD1DC'],
+          ticks: 200,
+          gravity: 0.8,
+          scalar: 1.2,
+        });
+      } catch {
+        // No-op: confetti is a nice-to-have
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [items.length]);
 
   const subtotal = items.reduce((acc, item) => acc + item.price, 0);
@@ -81,7 +102,13 @@ const CartDrawer = ({ items, onClose }) => {
                 className="flex gap-4 group"
               >
                 <div className="w-24 h-24 bg-lavender-light rounded-2xl overflow-hidden flex-shrink-0">
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="flex-1 flex flex-col justify-between py-1">
                   <div>

@@ -71,6 +71,8 @@ const ProductCard = ({ product, onAddToCart }) => {
             key={isHovered ? 'hover' : 'normal'}
             src={isHovered ? product.hoverImage : product.image}
             alt={product.name}
+            loading="lazy"
+            decoding="async"
             initial={{ opacity: 0, scale: 1.04 }}
             animate={{ opacity: 1, scale: isHovered ? 1.05 : 1 }}
             exit={{ opacity: 0, scale: 1.03 }}
