@@ -159,14 +159,14 @@ h1 span {
 
 @keyframes bubbleLanding {
   0% {
-    transform: translateY(28px) scale(0.5);
+    transform: translateY(30px) scale(0.55);
     opacity: 0;
   }
   28% {
     opacity: var(--bubble-opacity, 0.35);
   }
   100% {
-    transform: translateY(-55vh) scale(1.08);
+    transform: translateY(-72vh) scale(1.12);
     opacity: 0;
   }
 }
@@ -175,16 +175,18 @@ h1 span {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 20;
+  z-index: 40;
   overflow: hidden;
 }
 
 .landing-bubble {
   position: absolute;
-  bottom: 10vh;
+  bottom: 7vh;
   border-radius: 9999px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(241, 218, 210, 0.35));
-  filter: blur(0.2px);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(241, 218, 210, 0.55));
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  filter: blur(0.1px);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22), 0 12px 30px rgba(232, 207, 196, 0.28);
   animation-name: bubbleLanding;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   animation-fill-mode: forwards;
