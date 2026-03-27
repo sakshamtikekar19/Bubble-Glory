@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ShoppingCart, Eye, Star } from 'lucide-react';
 
 const products = [
@@ -49,18 +49,18 @@ const products = [
   }
 ];
 
-const ProductCard = ({ product, onAddToCart, canHover }) => {
+const ProductCard = ({ product, onAddToCart, canHover, disableMotion }) => {
   const [isHovered, setIsHovered] = useState(false);
   const premiumEase = [0.16, 1, 0.3, 1];
   const showHoverState = canHover && isHovered;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={disableMotion ? false : { opacity: 0, y: 20 }}
+      whileInView={disableMotion ? undefined : { opacity: 1, y: 0 }}
       whileHover={canHover ? { y: -4 } : undefined}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.9, ease: premiumEase }}
+      viewport={disableMotion ? undefined : { once: true, amount: 0.2 }}
+      transition={disableMotion ? { duration: 0.2 } : { duration: 0.9, ease: premiumEase }}
       className="group relative flex flex-col"
       onMouseEnter={canHover ? () => setIsHovered(true) : undefined}
       onMouseLeave={canHover ? () => setIsHovered(false) : undefined}
@@ -72,9 +72,9 @@ const ProductCard = ({ product, onAddToCart, canHover }) => {
           alt={product.name}
           loading="lazy"
           decoding="async"
-          initial={{ opacity: 0, scale: 1.02 }}
+          initial={disableMotion ? false : { opacity: 0, scale: 1.02 }}
           animate={{ opacity: 1, scale: showHoverState ? 1.05 : 1 }}
-          transition={{ duration: 0.45, ease: premiumEase }}
+          transition={disableMotion ? { duration: 0.2 } : { duration: 0.45, ease: premiumEase }}
           className="w-full h-full object-cover"
         />
 
@@ -87,9 +87,9 @@ const ProductCard = ({ product, onAddToCart, canHover }) => {
 
         {/* Quick Add Overlay */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={disableMotion ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: canHover ? (isHovered ? 1 : 0) : 1, y: canHover ? (isHovered ? 0 : 12) : 0 }}
-          transition={{ duration: 0.7, ease: premiumEase }}
+          transition={disableMotion ? { duration: 0.2 } : { duration: 0.7, ease: premiumEase }}
           className="absolute inset-x-4 bottom-4 flex gap-2"
         >
           <button 
@@ -124,6 +124,8 @@ const ProductCard = ({ product, onAddToCart, canHover }) => {
 const ProductGrid = ({ onAddToCart }) => {
   const premiumEase = [0.16, 1, 0.3, 1];
   const [canHover, setCanHover] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -137,19 +139,33 @@ const ProductGrid = ({ onAddToCart }) => {
     return () => mq.removeListener(update);
   }, []);
 
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    if (mq.addEventListener) {
+      mq.addEventListener('change', update);
+      return () => mq.removeEventListener('change', update);
+    }
+    mq.addListener(update);
+    return () => mq.removeListener(update);
+  }, []);
+
+  const disableMotion = reduceMotion || isMobile;
+
   return (
     <motion.section
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 1, ease: premiumEase }}
+      initial={disableMotion ? false : { opacity: 0, y: 20 }}
+      whileInView={disableMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={disableMotion ? undefined : { once: true, amount: 0.15 }}
+      transition={disableMotion ? { duration: 0.2 } : { duration: 1, ease: premiumEase }}
       className="py-24 md:py-28 px-6 md:px-12 bg-[#FCF8F5]"
     >
       <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.95, ease: premiumEase, delay: 0.05 }}
+        initial={disableMotion ? false : { opacity: 0, y: 18 }}
+        whileInView={disableMotion ? undefined : { opacity: 1, y: 0 }}
+        viewport={disableMotion ? undefined : { once: true }}
+        transition={disableMotion ? { duration: 0.2 } : { duration: 0.95, ease: premiumEase, delay: 0.05 }}
         className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6"
       >
         <div>
@@ -167,7 +183,13 @@ const ProductGrid = ({ onAddToCart }) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} canHover={canHover} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            onAddToCart={onAddToCart}
+            canHover={canHover}
+            disableMotion={disableMotion}
+          />
         ))}
       </div>
 

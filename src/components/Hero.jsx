@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 const MagneticButton = ({ children, className, ...props }) => {
@@ -54,6 +54,8 @@ const MagneticButton = ({ children, className, ...props }) => {
 };
 
 const Hero = () => {
+  const reduceMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
   const premiumEase = [0.16, 1, 0.3, 1];
   const staggerParent = {
     initial: {},
@@ -65,25 +67,41 @@ const Hero = () => {
     transition: { duration: 0.95, ease: premiumEase },
   };
 
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    if (mq.addEventListener) {
+      mq.addEventListener('change', update);
+      return () => mq.removeEventListener('change', update);
+    }
+    mq.addListener(update);
+    return () => mq.removeListener(update);
+  }, []);
+
+  const calm = reduceMotion || isMobile;
+  const leftVariants = calm
+    ? { initial: false, animate: { opacity: 1, x: 0 } }
+    : {
+        initial: { opacity: 0, x: -40 },
+        animate: {
+          opacity: 1,
+          x: 0,
+          transition: { duration: 1, ease: premiumEase, staggerChildren: 0.14, delayChildren: 0.08 },
+        },
+      };
+
   return (
     <section className="relative min-h-[100dvh] pt-28 sm:pt-32 md:pt-44 pb-14 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
       {/* Left Content */}
       <motion.div
-        initial="initial"
-        animate="animate"
-        variants={{
-          ...staggerParent,
-          initial: { opacity: 0, x: -40 },
-          animate: {
-            opacity: 1,
-            x: 0,
-            transition: { duration: 1, ease: premiumEase, staggerChildren: 0.14, delayChildren: 0.08 },
-          },
-        }}
+        initial={calm ? false : 'initial'}
+        animate={calm ? { opacity: 1, x: 0 } : 'animate'}
+        variants={calm ? leftVariants : { ...staggerParent, ...leftVariants }}
         className="w-full md:w-1/2 z-10 flex flex-col items-center md:items-start text-center md:text-left max-w-[460px] mx-auto md:mx-0"
       >
         {/* EST */}
-        <motion.div variants={fadeUp} className="flex items-center gap-3 mb-6">
+        <motion.div variants={calm ? undefined : fadeUp} className="flex items-center gap-3 mb-6">
           <span className="h-[1px] w-12 bg-[#C9A96E]/60"></span>
           <span className="text-[#C9A96E] text-[11px] tracking-[2.5px] uppercase">
             Est. 2024
@@ -91,20 +109,20 @@ const Hero = () => {
         </motion.div>
 
         {/* HERO TEXT */}
-        <motion.h1 variants={fadeUp} className="font-serif font-medium text-[clamp(38px,11vw,60px)] leading-[1.05] tracking-[-0.7px] text-[#1A1A1A]">
+        <motion.h1 variants={calm ? undefined : fadeUp} className="font-serif font-medium text-[clamp(38px,11vw,60px)] leading-[1.05] tracking-[-0.7px] text-[#1A1A1A]">
           A Luxury <br />
           <span className="text-[#F1DAD2]">Bathing</span> <br />
           Experience.
         </motion.h1>
 
         {/* PARAGRAPH */}
-        <motion.p variants={fadeUp} className="mt-6 text-[15px] leading-[1.9] text-[#8A8A8A] max-w-[380px]">
+        <motion.p variants={calm ? undefined : fadeUp} className="mt-6 text-[15px] leading-[1.9] text-[#8A8A8A] max-w-[380px]">
           Artisanal soaps, skin-friendly ingredients, and indulgent textures crafted for your daily self-care moment.
           Gentle, nourishing, and thoughtfully handmade.
         </motion.p>
 
         {/* BUTTONS */}
-        <motion.div variants={fadeUp} className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+        <motion.div variants={calm ? undefined : fadeUp} className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <MagneticButton className="px-7 sm:px-10 py-4 sm:py-5 bg-[#3A3A3A] text-white rounded-lg text-[12px] sm:text-[13px] tracking-[1.8px] uppercase font-medium hover:bg-[#4A4A4A] hover:shadow-lg transition-all hover:-translate-y-1 active:translate-y-0">
             SHOP THE COLLECTION
           </MagneticButton>
@@ -118,23 +136,23 @@ const Hero = () => {
       {/* Right Content - Floating Soap */}
       <div className="w-full md:w-1/2 relative mt-8 md:mt-0 flex justify-center items-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          initial={calm ? false : { opacity: 0, scale: 0.8, rotate: -10 }}
+          animate={calm ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 1, scale: 1, rotate: 0 }}
+          transition={calm ? { duration: 0.35 } : { duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="relative w-full max-w-[500px] aspect-square"
         >
           {/* Decorative Background Circles */}
           <motion.div 
             className="absolute inset-0 bg-lavender/40 rounded-full blur-3xl -z-10"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.6, 0.4] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+            animate={calm ? { scale: 1, opacity: 0.42 } : { scale: [1, 1.2, 1], opacity: [0.4, 0.6, 0.4] }}
+            transition={calm ? { duration: 0.2 } : { duration: 8, repeat: Infinity, ease: 'easeInOut' }}
           />
           
           {/* Floating Soap Image */}
           <motion.div
             className="w-full h-full flex items-center justify-center"
-            animate={{ y: [0, -14, 0], rotate: [0, 1.8, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: premiumEase }}
+            animate={calm ? { y: 0, rotate: 0 } : { y: [0, -14, 0], rotate: [0, 1.8, 0] }}
+            transition={calm ? { duration: 0.2 } : { duration: 8, repeat: Infinity, ease: premiumEase }}
           >
             <div className="relative w-[80%] h-[80%] bg-white rounded-[40px] shadow-luxury p-8 flex items-center justify-center overflow-hidden group">
               <img 
@@ -147,8 +165,8 @@ const Hero = () => {
               {/* Floating Badge */}
               <motion.div
                 className="absolute top-8 right-8 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-lavender/20"
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                animate={calm ? { y: 0 } : { y: [0, 10, 0] }}
+                transition={calm ? { duration: 0.2 } : { duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               >
                 <div className="flex items-center gap-2 text-bubblegum font-bold">
                   <Sparkles size={16} />
@@ -160,16 +178,20 @@ const Hero = () => {
           </motion.div>
 
           {/* Floating Bubbles */}
-          <motion.div 
-            className="absolute -top-10 -left-10 w-20 h-20 bg-mint/60 rounded-full blur-xl"
-            animate={{ y: [0, 50, 0], x: [0, 20, 0] }}
-            transition={{ duration: 7, repeat: Infinity }}
-          />
-          <motion.div 
-            className="absolute -bottom-10 -right-10 w-32 h-32 bg-bubblegum/30 rounded-full blur-2xl"
-            animate={{ y: [0, -40, 0], x: [0, -30, 0] }}
-            transition={{ duration: 9, repeat: Infinity }}
-          />
+          {!calm && (
+            <>
+              <motion.div 
+                className="absolute -top-10 -left-10 w-20 h-20 bg-mint/60 rounded-full blur-xl"
+                animate={{ y: [0, 50, 0], x: [0, 20, 0] }}
+                transition={{ duration: 7, repeat: Infinity }}
+              />
+              <motion.div 
+                className="absolute -bottom-10 -right-10 w-32 h-32 bg-bubblegum/30 rounded-full blur-2xl"
+                animate={{ y: [0, -40, 0], x: [0, -30, 0] }}
+                transition={{ duration: 9, repeat: Infinity }}
+              />
+            </>
+          )}
         </motion.div>
       </div>
     </section>
