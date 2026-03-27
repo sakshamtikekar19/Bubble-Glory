@@ -20,7 +20,11 @@ body,
 html,
 body {
   height: 100%;
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: auto;
+}
+
+#root {
+  min-height: 100dvh;
 }
 
 /* Hide the visible right-side scrollbar but keep page scrollable */

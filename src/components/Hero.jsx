@@ -66,7 +66,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen pt-36 md:pt-44 pb-16 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
+    <section className="relative min-h-[100dvh] pt-28 sm:pt-32 md:pt-44 pb-14 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
       {/* Left Content */}
       <motion.div
         initial="initial"
@@ -91,7 +91,7 @@ const Hero = () => {
         </motion.div>
 
         {/* HERO TEXT */}
-        <motion.h1 variants={fadeUp} className="font-serif font-medium text-[60px] leading-[1.05] tracking-[-0.7px] text-[#1A1A1A]">
+        <motion.h1 variants={fadeUp} className="font-serif font-medium text-[clamp(38px,11vw,60px)] leading-[1.05] tracking-[-0.7px] text-[#1A1A1A]">
           A Luxury <br />
           <span className="text-[#F1DAD2]">Bathing</span> <br />
           Experience.
@@ -105,11 +105,11 @@ const Hero = () => {
 
         {/* BUTTONS */}
         <motion.div variants={fadeUp} className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-          <MagneticButton className="px-10 py-5 bg-[#3A3A3A] text-white rounded-lg text-[13px] tracking-[2px] uppercase font-medium hover:bg-[#4A4A4A] hover:shadow-lg transition-all hover:-translate-y-1 active:translate-y-0">
+          <MagneticButton className="px-7 sm:px-10 py-4 sm:py-5 bg-[#3A3A3A] text-white rounded-lg text-[12px] sm:text-[13px] tracking-[1.8px] uppercase font-medium hover:bg-[#4A4A4A] hover:shadow-lg transition-all hover:-translate-y-1 active:translate-y-0">
             SHOP THE COLLECTION
           </MagneticButton>
 
-          <button className="px-10 py-5 border border-[#DDD3CC] rounded-lg text-[13px] tracking-[2px] uppercase font-medium text-[#4A4A4A] hover:border-[#E8CFC4] hover:text-[#D7B5AA] hover:shadow-md transition-all hover:-translate-y-1 active:translate-y-0">
+          <button className="px-7 sm:px-10 py-4 sm:py-5 border border-[#DDD3CC] rounded-lg text-[12px] sm:text-[13px] tracking-[1.8px] uppercase font-medium text-[#4A4A4A] hover:border-[#E8CFC4] hover:text-[#D7B5AA] hover:shadow-md transition-all hover:-translate-y-1 active:translate-y-0">
             INDULGE YOURSELF
           </button>
         </motion.div>

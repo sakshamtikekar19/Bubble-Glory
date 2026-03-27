@@ -70,6 +70,11 @@ const BackgroundEffects = () => {
     return y3;
   };
 
+  // Disable heavy fixed/parallax layer on mobile and reduced-motion devices.
+  if (calm) {
+    return null;
+  }
+
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {bubbles.map((bubble) => (
