@@ -156,3 +156,58 @@ h1 span {
 .micro-link:hover::after {
   transform: scaleX(1);
 }
+
+@keyframes bubbleLanding {
+  0% {
+    transform: translateY(28px) scale(0.5);
+    opacity: 0;
+  }
+  28% {
+    opacity: var(--bubble-opacity, 0.35);
+  }
+  100% {
+    transform: translateY(-55vh) scale(1.08);
+    opacity: 0;
+  }
+}
+
+.landing-bubbles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.landing-bubble {
+  position: absolute;
+  bottom: 10vh;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), rgba(241, 218, 210, 0.35));
+  filter: blur(0.2px);
+  animation-name: bubbleLanding;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes ctaBreathe {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow: 0 8px 20px rgba(58, 58, 58, 0.2);
+  }
+  50% {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(58, 58, 58, 0.28);
+  }
+}
+
+.cta-breathe {
+  animation: ctaBreathe 2.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-bubbles,
+  .cta-breathe {
+    animation: none !important;
+  }
+}

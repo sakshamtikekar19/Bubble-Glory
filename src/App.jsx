@@ -6,6 +6,7 @@ import ProductGrid from './components/ProductGrid';
 import TrustMarkers from './components/TrustMarkers';
 import Footer from './components/Footer';
 import BackgroundEffects from './components/BackgroundEffects';
+import LandingBubbles from './components/LandingBubbles';
 import CartDrawer from './components/CartDrawer';
 import OurStorySection from './components/OurStorySection';
 import GiftingHighlight from './components/GiftingHighlight';
@@ -24,6 +25,7 @@ function App() {
   return (
     <div className="relative min-h-screen grain-bg">
       <BackgroundEffects />
+      <LandingBubbles />
       
       <Navbar cartCount={cartItems.length} onCartClick={() => setIsCartOpen(true)} />
       

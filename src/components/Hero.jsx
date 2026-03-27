@@ -102,7 +102,7 @@ const Hero = () => {
           </p>
 
           <div className="mt-8 flex flex-col gap-3 w-full">
-            <button className="w-full px-6 py-4 bg-[#3A3A3A] text-white rounded-lg text-[12px] tracking-[1.8px] uppercase font-medium">
+            <button className="cta-breathe w-full px-6 py-4 bg-[#3A3A3A] text-white rounded-lg text-[12px] tracking-[1.8px] uppercase font-medium">
               SHOP THE COLLECTION
             </button>
             <button className="w-full px-6 py-4 border border-[#DDD3CC] rounded-lg text-[12px] tracking-[1.8px] uppercase font-medium text-[#4A4A4A]">
@@ -173,7 +173,7 @@ const Hero = () => {
 
         {/* BUTTONS */}
         <motion.div variants={calm ? undefined : fadeUp} className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-          <MagneticButton className="px-7 sm:px-10 py-4 sm:py-5 bg-[#3A3A3A] text-white rounded-lg text-[12px] sm:text-[13px] tracking-[1.8px] uppercase font-medium hover:bg-[#4A4A4A] hover:shadow-lg transition-all hover:-translate-y-1 active:translate-y-0">
+          <MagneticButton className="cta-breathe px-7 sm:px-10 py-4 sm:py-5 bg-[#3A3A3A] text-white rounded-lg text-[12px] sm:text-[13px] tracking-[1.8px] uppercase font-medium hover:bg-[#4A4A4A] hover:shadow-lg transition-all hover:-translate-y-1 active:translate-y-0">
             SHOP THE COLLECTION
           </MagneticButton>
 
