@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 
 const gallery = [
   'https://images.unsplash.com/photo-1605264964528-06403738d6dc?q=80&w=1200&auto=format&fit=crop',
@@ -9,28 +8,16 @@ const gallery = [
 ];
 
 const InstagramGallery = () => {
-  const premiumEase = [0.16, 1, 0.3, 1];
-
   return (
     <section className="py-24 md:py-28 px-6 md:px-12 bg-[#F9F3EE]">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: premiumEase }}
-        className="max-w-6xl mx-auto"
-      >
+      <div className="max-w-6xl mx-auto">
         <p className="uppercase tracking-[2px] text-[#C9A96E] text-xs mb-5 text-center">Instagram Moments</p>
         <h2 className="text-center mb-12">A Glimpse Into The Bubble & Glory Ritual</h2>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {gallery.map((img, idx) => (
-            <motion.div
+          {gallery.map((img) => (
+            <div
               key={img}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, ease: premiumEase, delay: idx * 0.06 }}
               className="aspect-square overflow-hidden rounded-2xl"
             >
               <img
@@ -38,10 +25,10 @@ const InstagramGallery = () => {
                 alt="Bubble and Glory product"
                 className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105"
               />
-            </motion.div>
+            </div>
           ))}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };
