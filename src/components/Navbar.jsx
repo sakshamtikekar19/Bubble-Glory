@@ -81,8 +81,8 @@ const Navbar = ({ cartCount, onCartClick }) => {
             <Menu size={24} className="text-gray-800" />
           </button>
           <div className="hidden md:flex items-center gap-6">
-            <a href="#" className="text-sm font-semibold hover:text-bubblegum hover:-translate-y-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] uppercase">Shop</a>
-            <a href="#" className="text-sm font-semibold hover:text-bubblegum hover:-translate-y-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] uppercase">Our Story</a>
+            <a href="#" className="micro-link text-sm font-semibold hover:text-bubblegum hover:-translate-y-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] uppercase">Shop</a>
+            <a href="#" className="micro-link text-sm font-semibold hover:text-bubblegum hover:-translate-y-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] uppercase">Our Story</a>
           </div>
         </div>
 
@@ -93,7 +93,7 @@ const Navbar = ({ cartCount, onCartClick }) => {
         </div>
 
         <div className="flex items-center gap-3 md:gap-6">
-          <a href="#" className="hidden md:block text-sm font-semibold hover:text-bubblegum hover:-translate-y-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] uppercase">Gifting</a>
+          <a href="#" className="micro-link hidden md:block text-sm font-semibold hover:text-bubblegum hover:-translate-y-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] uppercase">Gifting</a>
           <button 
             onClick={onCartClick}
             className="relative p-2 hover:bg-lavender hover:-translate-y-1 rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group"

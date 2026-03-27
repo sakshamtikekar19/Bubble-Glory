@@ -29,27 +29,27 @@ function App() {
       
       <main>
         <Hero />
-        <div>
+        <div className="soft-reveal" style={{ '--reveal-delay': '90ms' }}>
           <OurStorySection />
         </div>
-        <div>
+        <div className="soft-reveal" style={{ '--reveal-delay': '150ms' }}>
           <TrustMarkers />
         </div>
-        <div>
+        <div className="soft-reveal" style={{ '--reveal-delay': '220ms' }}>
           <ProductGrid onAddToCart={addToCart} />
         </div>
-        <div>
+        <div className="soft-reveal" style={{ '--reveal-delay': '280ms' }}>
           <GiftingHighlight />
         </div>
-        <div>
+        <div className="soft-reveal" style={{ '--reveal-delay': '340ms' }}>
           <TestimonialsSection />
         </div>
-        <div>
+        <div className="soft-reveal" style={{ '--reveal-delay': '400ms' }}>
           <InstagramGallery />
         </div>
       </main>
 
-      <div>
+      <div className="soft-reveal" style={{ '--reveal-delay': '460ms' }}>
         <Footer />
       </div>
 
