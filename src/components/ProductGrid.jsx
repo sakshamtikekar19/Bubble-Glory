@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
 import { ShoppingCart, Eye, Star } from 'lucide-react';
 
 const products = [
@@ -49,33 +48,24 @@ const products = [
   }
 ];
 
-const ProductCard = ({ product, onAddToCart, canHover, disableMotion }) => {
+const ProductCard = ({ product, onAddToCart, canHover }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const premiumEase = [0.16, 1, 0.3, 1];
   const showHoverState = canHover && isHovered;
 
   return (
-    <motion.div
-      initial={disableMotion ? false : { opacity: 0, y: 20 }}
-      whileInView={disableMotion ? undefined : { opacity: 1, y: 0 }}
-      whileHover={canHover ? { y: -4 } : undefined}
-      viewport={disableMotion ? undefined : { once: true, amount: 0.2 }}
-      transition={disableMotion ? { duration: 0.2 } : { duration: 0.9, ease: premiumEase }}
+    <div
       className="group relative flex flex-col"
       onMouseEnter={canHover ? () => setIsHovered(true) : undefined}
       onMouseLeave={canHover ? () => setIsHovered(false) : undefined}
     >
       {/* Image Container */}
       <div className="relative aspect-[4/5] overflow-hidden rounded-[32px] bg-lavender-light shadow-soft group-hover:shadow-luxury transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
-        <motion.img
+        <img
           src={showHoverState ? product.hoverImage : product.image}
           alt={product.name}
           loading="lazy"
           decoding="async"
-          initial={disableMotion ? false : { opacity: 0, scale: 1.02 }}
-          animate={{ opacity: 1, scale: showHoverState ? 1.05 : 1 }}
-          transition={disableMotion ? { duration: 0.2 } : { duration: 0.45, ease: premiumEase }}
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover transition-transform duration-500 ${showHoverState ? 'scale-105' : 'scale-100'}`}
         />
 
         {/* Tag */}
@@ -86,11 +76,10 @@ const ProductCard = ({ product, onAddToCart, canHover, disableMotion }) => {
         </div>
 
         {/* Quick Add Overlay */}
-        <motion.div
-          initial={disableMotion ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: canHover ? (isHovered ? 1 : 0) : 1, y: canHover ? (isHovered ? 0 : 12) : 0 }}
-          transition={disableMotion ? { duration: 0.2 } : { duration: 0.7, ease: premiumEase }}
-          className="absolute inset-x-4 bottom-4 flex gap-2"
+        <div
+          className={`absolute inset-x-4 bottom-4 flex gap-2 transition-all duration-500 ${
+            canHover ? (isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3') : 'opacity-100 translate-y-0'
+          }`}
         >
           <button 
             onClick={() => onAddToCart(product)}
@@ -101,7 +90,7 @@ const ProductCard = ({ product, onAddToCart, canHover, disableMotion }) => {
           <button className="w-12 h-12 bg-white text-gray-900 rounded-2xl flex items-center justify-center hover:bg-lavender transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1">
             <Eye size={18} />
           </button>
-        </motion.div>
+        </div>
       </div>
 
       {/* Info */}
@@ -117,15 +106,12 @@ const ProductCard = ({ product, onAddToCart, canHover, disableMotion }) => {
         <p className="mt-2 text-sm text-[#7A7A7A]">{product.description}</p>
         <p className="text-lg font-semibold text-gray-900 mt-1">₹{product.price}</p>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
 const ProductGrid = ({ onAddToCart }) => {
-  const premiumEase = [0.16, 1, 0.3, 1];
   const [canHover, setCanHover] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -139,35 +125,9 @@ const ProductGrid = ({ onAddToCart }) => {
     return () => mq.removeListener(update);
   }, []);
 
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 768px)');
-    const update = () => setIsMobile(mq.matches);
-    update();
-    if (mq.addEventListener) {
-      mq.addEventListener('change', update);
-      return () => mq.removeEventListener('change', update);
-    }
-    mq.addListener(update);
-    return () => mq.removeListener(update);
-  }, []);
-
-  const disableMotion = reduceMotion || isMobile;
-
   return (
-    <motion.section
-      initial={disableMotion ? false : { opacity: 0, y: 20 }}
-      whileInView={disableMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={disableMotion ? undefined : { once: true, amount: 0.15 }}
-      transition={disableMotion ? { duration: 0.2 } : { duration: 1, ease: premiumEase }}
-      className="py-24 md:py-28 px-6 md:px-12 bg-[#FCF8F5]"
-    >
-      <motion.div
-        initial={disableMotion ? false : { opacity: 0, y: 18 }}
-        whileInView={disableMotion ? undefined : { opacity: 1, y: 0 }}
-        viewport={disableMotion ? undefined : { once: true }}
-        transition={disableMotion ? { duration: 0.2 } : { duration: 0.95, ease: premiumEase, delay: 0.05 }}
-        className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6"
-      >
+    <section className="py-20 md:py-28 px-5 sm:px-6 md:px-12 bg-[#FCF8F5]">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div>
           <h2 className="font-bold text-gray-800 mb-4">Featured Products</h2>
           <p className="text-gray-500 max-w-md">Explore handcrafted, artisanal soaps designed to elevate your everyday bathing ritual.</p>
@@ -179,7 +139,7 @@ const ProductGrid = ({ onAddToCart }) => {
             </button>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
         {products.map((product) => (
@@ -188,7 +148,6 @@ const ProductGrid = ({ onAddToCart }) => {
             product={product}
             onAddToCart={onAddToCart}
             canHover={canHover}
-            disableMotion={disableMotion}
           />
         ))}
       </div>
@@ -198,7 +157,7 @@ const ProductGrid = ({ onAddToCart }) => {
           EXPLORE OUR SOAPS
         </button>
       </div>
-    </motion.section>
+    </section>
   );
 };
 
