@@ -80,16 +80,14 @@ const Hero = () => {
   }, []);
 
   const calm = reduceMotion || isMobile;
-  const leftVariants = calm
-    ? { initial: false, animate: { opacity: 1, x: 0 } }
-    : {
-        initial: { opacity: 0, x: -40 },
-        animate: {
-          opacity: 1,
-          x: 0,
-          transition: { duration: 1, ease: premiumEase, staggerChildren: 0.14, delayChildren: 0.08 },
-        },
-      };
+  const leftVariants = {
+    initial: { opacity: 0, x: -40 },
+    animate: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 1, ease: premiumEase, staggerChildren: 0.14, delayChildren: 0.08 },
+    },
+  };
 
   return (
     <section className="relative min-h-[100dvh] pt-28 sm:pt-32 md:pt-44 pb-14 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
@@ -97,7 +95,7 @@ const Hero = () => {
       <motion.div
         initial={calm ? false : 'initial'}
         animate={calm ? { opacity: 1, x: 0 } : 'animate'}
-        variants={calm ? leftVariants : { ...staggerParent, ...leftVariants }}
+        variants={calm ? undefined : { ...staggerParent, ...leftVariants }}
         className="w-full md:w-1/2 z-10 flex flex-col items-center md:items-start text-center md:text-left max-w-[460px] mx-auto md:mx-0"
       >
         {/* EST */}
