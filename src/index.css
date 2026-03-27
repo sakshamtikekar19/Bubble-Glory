@@ -183,10 +183,10 @@ h1 span {
   position: absolute;
   bottom: 7vh;
   border-radius: 9999px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(241, 218, 210, 0.55));
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 242, 248, 0.98), rgba(228, 140, 176, 0.76));
+  border: 1px solid rgba(246, 186, 211, 0.8);
   filter: blur(0.1px);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22), 0 12px 30px rgba(232, 207, 196, 0.28);
+  box-shadow: 0 0 0 1px rgba(248, 198, 220, 0.34), 0 14px 34px rgba(214, 118, 161, 0.42);
   animation-name: bubbleLanding;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   animation-fill-mode: forwards;
