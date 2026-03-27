@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { ShoppingCart, Eye, Star } from 'lucide-react';
 
 const products = [
@@ -49,37 +49,34 @@ const products = [
   }
 ];
 
-const ProductCard = ({ product, onAddToCart }) => {
+const ProductCard = ({ product, onAddToCart, canHover }) => {
   const [isHovered, setIsHovered] = useState(false);
   const premiumEase = [0.16, 1, 0.3, 1];
+  const showHoverState = canHover && isHovered;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -4 }}
+      whileHover={canHover ? { y: -4 } : undefined}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.9, ease: premiumEase }}
       className="group relative flex flex-col"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={canHover ? () => setIsHovered(true) : undefined}
+      onMouseLeave={canHover ? () => setIsHovered(false) : undefined}
     >
       {/* Image Container */}
       <div className="relative aspect-[4/5] overflow-hidden rounded-[32px] bg-lavender-light shadow-soft group-hover:shadow-luxury transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={isHovered ? 'hover' : 'normal'}
-            src={isHovered ? product.hoverImage : product.image}
-            alt={product.name}
-            loading="lazy"
-            decoding="async"
-            initial={{ opacity: 0, scale: 1.04 }}
-            animate={{ opacity: 1, scale: isHovered ? 1.05 : 1 }}
-            exit={{ opacity: 0, scale: 1.03 }}
-            transition={{ duration: 0.75, ease: premiumEase }}
-            className="w-full h-full object-cover will-change-transform"
-          />
-        </AnimatePresence>
+        <motion.img
+          src={showHoverState ? product.hoverImage : product.image}
+          alt={product.name}
+          loading="lazy"
+          decoding="async"
+          initial={{ opacity: 0, scale: 1.02 }}
+          animate={{ opacity: 1, scale: showHoverState ? 1.05 : 1 }}
+          transition={{ duration: 0.45, ease: premiumEase }}
+          className="w-full h-full object-cover"
+        />
 
         {/* Tag */}
         <div className="absolute top-4 left-4">
@@ -90,8 +87,8 @@ const ProductCard = ({ product, onAddToCart }) => {
 
         {/* Quick Add Overlay */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 14 }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: canHover ? (isHovered ? 1 : 0) : 1, y: canHover ? (isHovered ? 0 : 12) : 0 }}
           transition={{ duration: 0.7, ease: premiumEase }}
           className="absolute inset-x-4 bottom-4 flex gap-2"
         >
@@ -126,6 +123,19 @@ const ProductCard = ({ product, onAddToCart }) => {
 
 const ProductGrid = ({ onAddToCart }) => {
   const premiumEase = [0.16, 1, 0.3, 1];
+  const [canHover, setCanHover] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const update = () => setCanHover(mq.matches);
+    update();
+    if (mq.addEventListener) {
+      mq.addEventListener('change', update);
+      return () => mq.removeEventListener('change', update);
+    }
+    mq.addListener(update);
+    return () => mq.removeListener(update);
+  }, []);
 
   return (
     <motion.section
@@ -157,7 +167,7 @@ const ProductGrid = ({ onAddToCart }) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />
+          <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} canHover={canHover} />
         ))}
       </div>
 
