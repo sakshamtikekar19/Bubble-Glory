@@ -80,6 +80,58 @@ const Hero = () => {
   }, []);
 
   const calm = reduceMotion || isMobile;
+
+  if (isMobile) {
+    return (
+      <section className="relative min-h-[100dvh] pt-40 pb-12 px-5 flex flex-col justify-start gap-8">
+        <div className="w-full max-w-[460px] mx-auto text-left">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="h-[1px] w-12 bg-[#C9A96E]/60"></span>
+            <span className="text-[#C9A96E] text-[11px] tracking-[2.5px] uppercase">Est. 2024</span>
+          </div>
+
+          <h1 className="font-serif font-medium text-[clamp(36px,10vw,52px)] leading-[1.06] tracking-[-0.6px] text-[#1A1A1A]">
+            A Luxury <br />
+            <span className="text-[#F1DAD2]">Bathing</span> <br />
+            Experience.
+          </h1>
+
+          <p className="mt-5 text-[15px] leading-[1.85] text-[#777777] max-w-[380px]">
+            Artisanal soaps, skin-friendly ingredients, and indulgent textures crafted for your daily self-care moment.
+            Gentle, nourishing, and thoughtfully handmade.
+          </p>
+
+          <div className="mt-8 flex flex-col gap-3 w-full">
+            <button className="w-full px-6 py-4 bg-[#3A3A3A] text-white rounded-lg text-[12px] tracking-[1.8px] uppercase font-medium">
+              SHOP THE COLLECTION
+            </button>
+            <button className="w-full px-6 py-4 border border-[#DDD3CC] rounded-lg text-[12px] tracking-[1.8px] uppercase font-medium text-[#4A4A4A]">
+              INDULGE YOURSELF
+            </button>
+          </div>
+        </div>
+
+        <div className="w-full max-w-[420px] mx-auto">
+          <div className="relative w-full aspect-square bg-white rounded-[28px] shadow-luxury p-5 overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1605264964528-06403738d6dc?q=80&w=800&auto=format&fit=crop"
+              alt="Luxury Soap"
+              loading="eager"
+              decoding="async"
+              className="w-full h-full object-cover rounded-[16px]"
+            />
+            <div className="absolute top-4 right-4 bg-white/90 p-3 rounded-xl border border-lavender/20">
+              <div className="flex items-center gap-2 text-bubblegum font-bold">
+                <Sparkles size={14} />
+                <span className="text-sm">NEW</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   const leftVariants = {
     initial: { opacity: 0, x: -40 },
     animate: {
