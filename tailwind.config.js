@@ -4,8 +4,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        serif: ['Playfair Display', 'serif'],
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
+        serif: ['Fraunces', 'Georgia', 'serif'],
+        display: ['Fraunces', 'Georgia', 'serif'],
       },
       colors: {
         bubblegum: { DEFAULT: '#FFC1CC', dark: '#e89aa8' },
@@ -14,10 +15,14 @@ export default {
         mint: { DEFAULT: '#F0FFF0', dark: '#7CB87C' },
         'soft-pink': '#FFF5F7',
         sass: {
-          cream: '#FDF8F5',
-          blush: '#FCE8EE',
-          rose: '#E8A4B8',
-          ink: '#1A1A1A',
+          cream: '#FFFBF9',
+          cream2: '#F9F3F5',
+          bar: '#D9A8B8',
+          barDeep: '#C995A8',
+          blush: '#F5E4EA',
+          rose: '#C77B94',
+          ink: '#222222',
+          muted: '#5C5C5C',
         },
       },
       boxShadow: {

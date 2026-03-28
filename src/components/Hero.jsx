@@ -83,50 +83,50 @@ const Hero = () => {
 
   if (isMobile) {
     return (
-      <section className="relative min-h-[100dvh] pt-40 pb-12 px-5 flex flex-col justify-start gap-8">
+      <section className="relative min-h-[100dvh] pt-36 pb-12 px-5 flex flex-col justify-start gap-8">
         <div className="w-full max-w-[460px] mx-auto text-left">
-          <p className="text-[12px] md:text-sm font-medium text-[#6B6B6B] tracking-wide mb-3">
+          <p className="text-[12px] md:text-sm font-medium text-sass-muted tracking-wide mb-3 font-sans">
             Elevate your daily bathing ritual
           </p>
           <div className="flex items-center gap-3 mb-5">
-            <span className="h-[1px] w-12 bg-[#C9A96E]/60"></span>
-            <span className="text-[#C9A96E] text-[11px] tracking-[2.5px] uppercase">Est. 2024</span>
+            <span className="h-px w-12 bg-sass-rose/50" />
+            <span className="text-sass-rose text-[10px] tracking-[0.22em] uppercase font-bold font-sans">Est. 2024</span>
           </div>
 
-          <h1 className="font-serif font-medium text-[clamp(36px,10vw,52px)] leading-[1.06] tracking-[-0.6px] text-[#1A1A1A]">
+          <h1 className="font-display font-medium text-[clamp(36px,10vw,52px)] leading-[1.06] tracking-[-0.02em] text-sass-ink">
             A Luxury <br />
-            <span className="text-[#F1DAD2]">Bathing</span> <br />
+            <span className="text-sass-rose italic font-normal">Bathing</span> <br />
             Experience.
           </h1>
 
-          <p className="mt-5 text-[15px] leading-[1.85] text-[#777777] max-w-[380px]">
+          <p className="mt-5 text-[15px] leading-[1.85] text-sass-muted max-w-[380px] font-sans">
             Artisanal soaps, skin-friendly ingredients, and indulgent textures crafted for your daily self-care moment.
             Gentle, nourishing, and thoughtfully handmade.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 w-full">
-            <button className="cta-breathe w-full px-6 py-4 bg-[#3A3A3A] text-white rounded-lg text-[12px] tracking-[1.8px] uppercase font-medium">
-              SHOP THE COLLECTION
-            </button>
-            <button className="w-full px-6 py-4 border border-[#DDD3CC] rounded-lg text-[12px] tracking-[1.8px] uppercase font-medium text-[#4A4A4A]">
-              INDULGE YOURSELF
-            </button>
+            <a href="#products" className="cta-breathe btn-sass-primary w-full text-center">
+              Shop the collection
+            </a>
+            <a href="#story" className="btn-sass-outline w-full text-center">
+              Our story
+            </a>
           </div>
         </div>
 
         <div className="w-full max-w-[420px] mx-auto">
-          <div className="relative w-full aspect-square bg-white rounded-[28px] shadow-luxury p-5 overflow-hidden">
+          <div className="relative w-full aspect-square bg-white rounded-2xl shadow-soft border border-black/[0.06] p-4 overflow-hidden">
             <img
               src="https://images.unsplash.com/photo-1605264964528-06403738d6dc?q=80&w=800&auto=format&fit=crop"
               alt="Luxury Soap"
               loading="eager"
               decoding="async"
-              className="w-full h-full object-cover rounded-[16px]"
+              className="w-full h-full object-cover rounded-lg"
             />
-            <div className="absolute top-4 right-4 bg-white/90 p-3 rounded-xl border border-lavender/20">
-              <div className="flex items-center gap-2 text-bubblegum font-bold">
-                <Sparkles size={14} />
-                <span className="text-sm">NEW</span>
+            <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm p-2.5 rounded-lg border border-black/[0.06] shadow-sm">
+              <div className="flex items-center gap-2 text-sass-rose font-bold font-sans text-[11px] uppercase tracking-wider">
+                <Sparkles size={14} strokeWidth={2} />
+                <span>New</span>
               </div>
             </div>
           </div>
@@ -145,7 +145,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-[100dvh] pt-28 sm:pt-32 md:pt-44 pb-14 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
+    <section className="relative min-h-[100dvh] pt-28 sm:pt-32 md:pt-40 pb-14 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
       {/* Left Content */}
       <motion.div
         initial={calm ? false : 'initial'}
@@ -155,40 +155,49 @@ const Hero = () => {
       >
         <motion.p
           variants={calm ? undefined : fadeUp}
-          className="text-sm font-medium text-[#6B6B6B] tracking-wide mb-4 md:mb-5"
+          className="text-sm font-medium text-sass-muted tracking-wide mb-4 md:mb-5 font-sans"
         >
           Elevate your daily bathing ritual
         </motion.p>
         {/* EST */}
         <motion.div variants={calm ? undefined : fadeUp} className="flex items-center gap-3 mb-6">
-          <span className="h-[1px] w-12 bg-[#C9A96E]/60"></span>
-          <span className="text-[#C9A96E] text-[11px] tracking-[2.5px] uppercase">
+          <span className="h-px w-12 bg-sass-rose/50" />
+          <span className="text-sass-rose text-[10px] tracking-[0.22em] uppercase font-bold font-sans">
             Est. 2024
           </span>
         </motion.div>
 
         {/* HERO TEXT */}
-        <motion.h1 variants={calm ? undefined : fadeUp} className="font-serif font-medium text-[clamp(38px,11vw,60px)] leading-[1.05] tracking-[-0.7px] text-[#1A1A1A]">
+        <motion.h1 variants={calm ? undefined : fadeUp} className="font-display font-medium text-[clamp(38px,11vw,60px)] leading-[1.05] tracking-[-0.02em] text-sass-ink">
           A Luxury <br />
-          <span className="text-[#F1DAD2]">Bathing</span> <br />
+          <span className="text-sass-rose italic font-normal">Bathing</span> <br />
           Experience.
         </motion.h1>
 
         {/* PARAGRAPH */}
-        <motion.p variants={calm ? undefined : fadeUp} className="mt-6 text-[15px] leading-[1.9] text-[#8A8A8A] max-w-[380px]">
+        <motion.p variants={calm ? undefined : fadeUp} className="mt-6 text-[15px] leading-[1.9] text-sass-muted max-w-[380px] font-sans">
           Artisanal soaps, skin-friendly ingredients, and indulgent textures crafted for your daily self-care moment.
           Gentle, nourishing, and thoughtfully handmade.
         </motion.p>
 
         {/* BUTTONS */}
         <motion.div variants={calm ? undefined : fadeUp} className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-          <MagneticButton className="cta-breathe px-7 sm:px-10 py-4 sm:py-5 bg-[#3A3A3A] text-white rounded-lg text-[12px] sm:text-[13px] tracking-[1.8px] uppercase font-medium hover:bg-[#4A4A4A] hover:shadow-lg transition-all hover:-translate-y-1 active:translate-y-0">
-            SHOP THE COLLECTION
+          <MagneticButton
+            type="button"
+            className="cta-breathe btn-sass-primary hover:-translate-y-0.5 active:translate-y-0"
+            onClick={() => {
+              document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            Shop the collection
           </MagneticButton>
 
-          <button className="px-7 sm:px-10 py-4 sm:py-5 border border-[#DDD3CC] rounded-lg text-[12px] sm:text-[13px] tracking-[1.8px] uppercase font-medium text-[#4A4A4A] hover:border-[#E8CFC4] hover:text-[#D7B5AA] hover:shadow-md transition-all hover:-translate-y-1 active:translate-y-0">
-            INDULGE YOURSELF
-          </button>
+          <a
+            href="#story"
+            className="btn-sass-outline text-center hover:-translate-y-0.5 active:translate-y-0 transition-transform"
+          >
+            Our story
+          </a>
         </motion.div>
       </motion.div>
 
@@ -202,7 +211,7 @@ const Hero = () => {
         >
           {/* Decorative Background Circles */}
           <motion.div 
-            className="absolute inset-0 bg-lavender/40 rounded-full blur-3xl -z-10"
+            className="absolute inset-0 bg-sass-blush/50 rounded-full blur-3xl -z-10"
             animate={calm ? { scale: 1, opacity: 0.42 } : { scale: [1, 1.2, 1], opacity: [0.4, 0.6, 0.4] }}
             transition={calm ? { duration: 0.2 } : { duration: 8, repeat: Infinity, ease: 'easeInOut' }}
           />
@@ -213,25 +222,25 @@ const Hero = () => {
             animate={calm ? { y: 0, rotate: 0 } : { y: [0, -14, 0], rotate: [0, 1.8, 0] }}
             transition={calm ? { duration: 0.2 } : { duration: 8, repeat: Infinity, ease: premiumEase }}
           >
-            <div className="relative w-[80%] h-[80%] bg-white rounded-[40px] shadow-luxury p-8 flex items-center justify-center overflow-hidden group">
+            <div className="relative w-[80%] h-[80%] bg-white rounded-3xl shadow-soft border border-black/[0.06] p-6 md:p-8 flex items-center justify-center overflow-hidden group">
               <img 
                 src="https://images.unsplash.com/photo-1605264964528-06403738d6dc?q=80&w=800&auto=format&fit=crop" 
                 alt="Luxury Soap" 
-                className="w-full h-full object-cover rounded-[20px] group-hover:scale-110 transition-transform duration-700"
+                className="w-full h-full object-cover rounded-xl group-hover:scale-110 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-lavender/30 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-sass-blush/25 to-transparent pointer-events-none" />
               
               {/* Floating Badge */}
               <motion.div
-                className="absolute top-8 right-8 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-lavender/20"
+                className="absolute top-6 right-6 md:top-8 md:right-8 bg-white/95 backdrop-blur-md p-3 md:p-4 rounded-lg shadow-md border border-black/[0.06]"
                 animate={calm ? { y: 0 } : { y: [0, 10, 0] }}
                 transition={calm ? { duration: 0.2 } : { duration: 4, repeat: Infinity, ease: 'easeInOut' }}
               >
-                <div className="flex items-center gap-2 text-bubblegum font-bold">
-                  <Sparkles size={16} />
-                  <span>NEW</span>
+                <div className="flex items-center gap-2 text-sass-rose font-bold font-sans text-[11px] uppercase tracking-wider">
+                  <Sparkles size={16} strokeWidth={2} />
+                  <span>New</span>
                 </div>
-                <p className="font-bold text-gray-400 uppercase mt-1">Macaroon Collection</p>
+                <p className="font-sans font-bold text-sass-muted uppercase text-[10px] tracking-[0.14em] mt-1.5">Macaroon Collection</p>
               </motion.div>
             </div>
           </motion.div>

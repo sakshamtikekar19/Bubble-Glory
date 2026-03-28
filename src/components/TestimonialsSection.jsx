@@ -20,19 +20,21 @@ const testimonials = [
 
 const TestimonialsSection = () => {
   return (
-    <section className="py-24 md:py-28 px-6 md:px-12 bg-[#FCF8F5]">
+    <section className="py-16 md:py-24 px-6 md:px-12 bg-white border-t border-black/[0.05]">
       <div className="max-w-6xl mx-auto">
-        <p className="uppercase tracking-[2px] text-[#C9A96E] text-xs mb-5 text-center">Our customers</p>
-        <h2 className="text-center mb-12 font-serif">Loved by self-care enthusiasts</h2>
+        <p className="uppercase tracking-[0.22em] text-sass-rose text-[10px] font-bold mb-4 text-center font-sans">Our customers</p>
+        <h2 className="text-center mb-12 font-display font-medium text-sass-ink text-[clamp(24px,3.5vw,32px)]">
+          Loved by self-care enthusiasts
+        </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((item) => (
             <div
               key={item.name}
-              className="card bg-white/85 hover:-translate-y-1"
+              className="card bg-sass-cream/90 hover:-translate-y-0.5 transition-transform duration-300"
             >
-              <p className="mb-5">"{item.quote}"</p>
-              <small className="text-[#1A1A1A] font-medium">- {item.name}</small>
+              <p className="mb-5 font-sans text-sass-muted text-[15px] leading-relaxed">&ldquo;{item.quote}&rdquo;</p>
+              <small className="text-sass-ink font-semibold font-sans text-sm">— {item.name}</small>
             </div>
           ))}
         </div>

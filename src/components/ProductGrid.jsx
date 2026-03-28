@@ -58,8 +58,7 @@ const ProductCard = ({ product, onAddToCart, canHover }) => {
       onMouseEnter={canHover ? () => setIsHovered(true) : undefined}
       onMouseLeave={canHover ? () => setIsHovered(false) : undefined}
     >
-      {/* Image Container */}
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[32px] bg-lavender-light shadow-soft group-hover:shadow-luxury transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-sass-cream border border-black/[0.06] shadow-soft transition-shadow duration-500 group-hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)]">
         <img
           src={showHoverState ? product.hoverImage : product.image}
           alt={product.name}
@@ -68,43 +67,45 @@ const ProductCard = ({ product, onAddToCart, canHover }) => {
           className={`w-full h-full object-cover transition-transform duration-500 ${showHoverState ? 'scale-105' : 'scale-100'}`}
         />
 
-        {/* Tag */}
-        <div className="absolute top-4 left-4">
-          <span className="px-4 py-1.5 bg-white/90 backdrop-blur-md rounded-full font-bold text-gray-800 uppercase shadow-sm">
+        <div className="absolute top-3 left-3">
+          <span className="px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-md font-sans font-bold text-sass-ink uppercase text-[10px] tracking-[0.12em] shadow-sm border border-black/[0.05]">
             {product.tag}
           </span>
         </div>
 
-        {/* Quick Add Overlay */}
         <div
-          className={`absolute inset-x-4 bottom-4 flex gap-2 transition-all duration-500 ${
-            canHover ? (isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3') : 'opacity-100 translate-y-0'
+          className={`absolute inset-x-3 bottom-3 flex gap-2 transition-all duration-300 ${
+            canHover ? (isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2') : 'opacity-100 translate-y-0'
           }`}
         >
           <button 
+            type="button"
             onClick={() => onAddToCart(product)}
-            className="flex-1 py-4 bg-gray-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-gray-800 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:scale-[1.03] hover:shadow-lg active:translate-y-0"
+            className="flex-1 py-3.5 btn-sass-primary !text-[10px] rounded-md"
           >
-            <ShoppingCart size={16} /> Add to cart
+            <ShoppingCart size={15} strokeWidth={2} /> Add to cart
           </button>
-          <button className="w-12 h-12 bg-white text-gray-900 rounded-2xl flex items-center justify-center hover:bg-lavender transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1">
-            <Eye size={18} />
+          <button
+            type="button"
+            className="w-11 h-11 shrink-0 bg-white text-sass-ink rounded-md flex items-center justify-center border border-black/[0.08] hover:bg-sass-cream transition-colors"
+            aria-label="Quick view"
+          >
+            <Eye size={17} />
           </button>
         </div>
       </div>
 
-      {/* Info */}
-      <div className="mt-6 px-2">
-        <div className="flex items-center gap-1 mb-2">
+      <div className="mt-5 px-0.5">
+        <div className="flex items-center gap-1 mb-2 font-sans">
           {[...Array(5)].map((_, i) => (
-            <Star key={i} size={12} className={i < product.rating ? "fill-gold text-gold" : "text-gray-200"} />
+            <Star key={i} size={12} className={i < product.rating ? 'fill-gold text-gold' : 'text-gray-200'} />
           ))}
-          <span className="text-gray-400 font-bold ml-1">(24)</span>
+          <span className="text-sass-muted font-semibold text-xs ml-1">(24)</span>
         </div>
-        <p className="font-bold text-bubblegum uppercase mb-1">{product.category}</p>
-        <h3 className="font-semibold text-gray-800 group-hover:text-bubblegum transition-colors">{product.name}</h3>
-        <p className="mt-2 text-sm text-[#7A7A7A]">{product.description}</p>
-        <p className="text-lg font-semibold text-gray-900 mt-1">₹{product.price}</p>
+        <p className="font-sans font-bold text-sass-rose uppercase text-[10px] tracking-[0.16em] mb-1">{product.category}</p>
+        <h3 className="font-display font-medium text-sass-ink text-lg group-hover:text-sass-rose transition-colors">{product.name}</h3>
+        <p className="mt-2 text-sm text-sass-muted leading-relaxed font-sans">{product.description}</p>
+        <p className="text-base font-semibold text-sass-ink mt-2 font-sans">₹{product.price}</p>
       </div>
     </div>
   );
@@ -126,25 +127,29 @@ const ProductGrid = ({ onAddToCart }) => {
   }, []);
 
   return (
-    <section id="products" className="py-20 md:py-28 px-5 sm:px-6 md:px-12 bg-white">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+    <section id="products" className="py-16 md:py-24 px-5 sm:px-6 md:px-12 bg-sass-cream border-t border-black/[0.05]">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 max-w-7xl mx-auto">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.25em] text-[#C9A96E] mb-2">Best sellers</p>
-          <h2 className="font-serif font-medium text-gray-900 mb-3">Our bubble stars</h2>
-          <p className="text-gray-500 max-w-md text-[15px]">
+          <p className="text-[10px] uppercase tracking-[0.22em] text-sass-rose font-bold mb-3 font-sans">Best sellers</p>
+          <h2 className="font-display font-medium text-sass-ink text-[clamp(26px,4vw,36px)] mb-3">Our bubble stars</h2>
+          <p className="text-sass-muted max-w-md text-[15px] font-sans">
             Customer favourites — handcrafted bars and gift sets, ready to add to your ritual.
           </p>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2">
           {['All', 'Macaroon', 'Waffle', 'Gift Boxes'].map((cat) => (
-            <button key={cat} className="px-4 sm:px-6 py-2 rounded-full border border-gray-100 font-semibold hover:border-bubblegum hover:text-bubblegum transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1">
+            <button
+              key={cat}
+              type="button"
+              className="px-4 py-2 rounded-md border border-black/[0.1] bg-white font-sans font-semibold text-[10px] uppercase tracking-[0.12em] text-sass-ink hover:border-sass-rose hover:text-sass-rose transition-colors"
+            >
               {cat}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-14 max-w-7xl mx-auto">
         {products.map((product) => (
           <ProductCard
             key={product.id}
@@ -155,11 +160,8 @@ const ProductGrid = ({ onAddToCart }) => {
         ))}
       </div>
 
-      <div className="mt-16 text-center">
-        <a
-          href="#products"
-          className="inline-flex px-8 sm:px-12 py-4 sm:py-5 border-2 border-gray-900 text-gray-900 rounded-full font-bold text-[12px] uppercase tracking-[1.5px] hover:bg-gray-900 hover:text-white transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-        >
+      <div className="mt-14 text-center max-w-7xl mx-auto">
+        <a href="#products" className="btn-sass-outline">
           View all
         </a>
       </div>

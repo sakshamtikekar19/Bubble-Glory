@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
 
 const promos = [
   {
@@ -10,7 +9,7 @@ const promos = [
     cta: 'Shop now',
     href: '#products',
     image: 'https://images.unsplash.com/photo-1547793548-7a040dd3a274?q=80&w=900&auto=format&fit=crop',
-    bg: 'bg-[#FDF6F8]',
+    bg: 'bg-[#FFFBF9]',
     reverse: false,
   },
   {
@@ -21,7 +20,7 @@ const promos = [
     cta: 'Shop now',
     href: '#products',
     image: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=900&auto=format&fit=crop',
-    bg: 'bg-[#F8F4F0]',
+    bg: 'bg-[#F9F3F5]',
     reverse: true,
   },
 ];
@@ -30,16 +29,13 @@ const PromoBanners = () => {
   return (
     <div className="flex flex-col">
       {promos.map((p) => (
-        <section
-          key={p.title}
-          className={`${p.bg} border-b border-[#EEE5E8]`}
-        >
+        <section key={p.title} className={`${p.bg} border-b border-black/[0.06]`}>
           <div
             className={`max-w-6xl mx-auto flex flex-col md:flex-row md:items-stretch ${
               p.reverse ? 'md:flex-row-reverse' : ''
             }`}
           >
-            <div className="w-full md:w-1/2 aspect-[4/3] md:aspect-auto md:min-h-[320px]">
+            <div className="w-full md:w-1/2 aspect-[5/4] md:aspect-auto md:min-h-[340px]">
               <img
                 src={p.image}
                 alt=""
@@ -48,22 +44,18 @@ const PromoBanners = () => {
                 decoding="async"
               />
             </div>
-            <div className="w-full md:w-1/2 flex flex-col justify-center px-6 sm:px-10 md:px-14 py-12 md:py-16">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-[#C9A96E] mb-3">
+            <div className="w-full md:w-1/2 flex flex-col justify-center px-6 sm:px-10 md:px-16 py-12 md:py-20">
+              <p className="text-[10px] uppercase tracking-[0.22em] text-sass-rose font-bold mb-4">
                 {p.eyebrow}
               </p>
-              <h2 className="font-serif text-[clamp(26px,4vw,36px)] text-[#1A1A1A] mb-4 leading-tight">
+              <h2 className="font-display font-semibold text-[clamp(22px,3.5vw,32px)] text-sass-ink mb-5 leading-tight uppercase tracking-[0.04em]">
                 {p.title}
               </h2>
-              <p className="text-[15px] text-[#6B6B6B] leading-relaxed mb-8 max-w-md">
+              <p className="text-[15px] text-sass-muted leading-[1.75] mb-9 max-w-md font-sans">
                 {p.body}
               </p>
-              <a
-                href={p.href}
-                className="inline-flex items-center gap-2 self-start px-8 py-3.5 bg-[#1A1A1A] text-white text-[12px] font-semibold uppercase tracking-[1.5px] rounded-full hover:bg-[#333] transition-colors"
-              >
+              <a href={p.href} className="btn-sass-primary self-start">
                 {p.cta}
-                <ArrowRight size={16} />
               </a>
             </div>
           </div>
