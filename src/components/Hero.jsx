@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 import heroBgVideo from '../assets/hero-bg.mp4';
+
+/** Half-speed (or slower) reads calmer on large hero backgrounds and feels less “busy” than 1×. */
+const HERO_VIDEO_PLAYBACK_RATE = 0.45;
 
 /**
  * Bundled MP4 URL (Vite) so the file always resolves next to the JS chunk on GitHub Pages.
@@ -18,14 +21,26 @@ const HeroBackdrop = () => {
     el.setAttribute('playsinline', '');
     el.setAttribute('webkit-playsinline', '');
 
+    const applySlowMo = () => {
+      el.defaultPlaybackRate = HERO_VIDEO_PLAYBACK_RATE;
+      el.playbackRate = HERO_VIDEO_PLAYBACK_RATE;
+    };
+
     const tryPlay = () => {
+      applySlowMo();
       const p = el.play();
       if (p !== undefined && typeof p.catch === 'function') p.catch(() => {});
     };
+
+    applySlowMo();
     tryPlay();
+    el.addEventListener('loadedmetadata', applySlowMo);
+    el.addEventListener('playing', applySlowMo);
     el.addEventListener('loadeddata', tryPlay);
     el.addEventListener('canplay', tryPlay);
     return () => {
+      el.removeEventListener('loadedmetadata', applySlowMo);
+      el.removeEventListener('playing', applySlowMo);
       el.removeEventListener('loadeddata', tryPlay);
       el.removeEventListener('canplay', tryPlay);
     };
@@ -41,6 +56,7 @@ const HeroBackdrop = () => {
         loop
         playsInline
         preload="auto"
+        fetchPriority="high"
         className="absolute left-1/2 top-1/2 min-h-full min-w-full h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.02] opacity-[0.62] [filter:saturate(0.75)_brightness(1.08)]"
       />
       <div className="absolute inset-0 bg-[#fffbfa]/45" />
