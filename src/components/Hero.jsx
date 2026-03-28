@@ -2,27 +2,46 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 
-const HERO_VIDEO_SRC = `${import.meta.env.BASE_URL}videos/hero-bg.mp4`;
+const b = import.meta.env.BASE_URL;
+const HERO_VIDEO_SRC = b.endsWith('/') ? `${b}videos/hero-bg.mp4` : `${b}/videos/hero-bg.mp4`;
 
-/** Soft, airy wash over autoplay video — respects reduced motion (no video). */
-const HeroBackdrop = ({ videoOn }) => (
-  <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-    {videoOn && (
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        className="absolute left-1/2 top-1/2 h-full min-h-full w-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover opacity-[0.22] [filter:saturate(0.55)_brightness(1.35)]"
-      >
-        <source src={HERO_VIDEO_SRC} type="video/mp4" />
-      </video>
-    )}
-    <div className="absolute inset-0 bg-[#fffbfa]/80" />
-    <div className="absolute inset-0 bg-gradient-to-br from-white/75 via-[#fff9f7]/45 to-[#fdf2f6]/88" />
-  </div>
-);
+/** Soft wash over video. Uses z-0 inside `isolate` section — negative z-index was hiding the layer. */
+const HeroBackdrop = ({ videoOn }) => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el || !videoOn) return;
+    el.muted = true;
+    el.defaultMuted = true;
+    const play = () => {
+      const p = el.play();
+      if (p !== undefined && typeof p.catch === 'function') p.catch(() => {});
+    };
+    play();
+    el.addEventListener('loadeddata', play);
+    return () => el.removeEventListener('loadeddata', play);
+  }, [videoOn]);
+
+  return (
+    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
+      {videoOn && (
+        <video
+          ref={videoRef}
+          src={HERO_VIDEO_SRC}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute left-1/2 top-1/2 h-full min-h-full w-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover opacity-[0.48] [filter:saturate(0.7)_brightness(1.12)]"
+        />
+      )}
+      <div className="absolute inset-0 bg-[#fffbfa]/58" />
+      <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-[#fff9f7]/30 to-[#fdf2f6]/65" />
+    </div>
+  );
+};
 
 const MagneticButton = ({ children, className, ...props }) => {
   const ref = useRef(null);
@@ -106,7 +125,7 @@ const Hero = () => {
 
   if (isMobile) {
     return (
-      <section className="relative min-h-[100dvh] overflow-hidden pt-36 pb-12 px-5 flex flex-col justify-start gap-8">
+      <section className="relative isolate min-h-[100dvh] overflow-hidden pt-36 pb-12 px-5 flex flex-col justify-start gap-8">
         <HeroBackdrop videoOn={videoOn} />
         <div className="relative z-10 w-full max-w-[460px] mx-auto text-left">
           <p className="text-[12px] md:text-sm font-medium text-sass-muted tracking-wide mb-3 font-sans">
@@ -169,7 +188,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-[100dvh] overflow-hidden pt-28 sm:pt-32 md:pt-40 pb-14 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
+    <section className="relative isolate min-h-[100dvh] overflow-hidden pt-28 sm:pt-32 md:pt-40 pb-14 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
       <HeroBackdrop videoOn={videoOn} />
       {/* Left Content */}
       <motion.div
