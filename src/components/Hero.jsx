@@ -3,51 +3,84 @@ import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-moti
 import { Sparkles } from 'lucide-react';
 import heroBgVideo from '../assets/hero-bg.mp4';
 
-/** Half-speed (or slower) reads calmer on large hero backgrounds and feels less “busy” than 1×. */
-const HERO_VIDEO_PLAYBACK_RATE = 0.45;
-
 /**
  * Bundled MP4 URL (Vite) so the file always resolves next to the JS chunk on GitHub Pages.
- * Not gated on reduced-motion — ambient muted loops are treated separately from motion animations.
+ * 1× playback + no CSS filters on the video (filters force per-frame GPU work and cause jank).
  */
 const HeroBackdrop = () => {
+  const wrapRef = useRef(null);
   const videoRef = useRef(null);
+  const inViewRef = useRef(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = videoRef.current;
     if (!el) return;
     el.muted = true;
     el.defaultMuted = true;
+    el.defaultPlaybackRate = 1;
+    el.playbackRate = 1;
     el.setAttribute('playsinline', '');
     el.setAttribute('webkit-playsinline', '');
-
-    const applySlowMo = () => {
-      el.defaultPlaybackRate = HERO_VIDEO_PLAYBACK_RATE;
-      el.playbackRate = HERO_VIDEO_PLAYBACK_RATE;
-    };
+    el.load();
 
     const tryPlay = () => {
-      applySlowMo();
       const p = el.play();
       if (p !== undefined && typeof p.catch === 'function') p.catch(() => {});
     };
 
-    applySlowMo();
     tryPlay();
-    el.addEventListener('loadedmetadata', applySlowMo);
-    el.addEventListener('playing', applySlowMo);
     el.addEventListener('loadeddata', tryPlay);
     el.addEventListener('canplay', tryPlay);
     return () => {
-      el.removeEventListener('loadedmetadata', applySlowMo);
-      el.removeEventListener('playing', applySlowMo);
       el.removeEventListener('loadeddata', tryPlay);
       el.removeEventListener('canplay', tryPlay);
     };
   }, []);
 
+  useEffect(() => {
+    const el = videoRef.current;
+    const root = wrapRef.current;
+    if (!el || !root) return;
+
+    const syncPlay = () => {
+      if (document.hidden || !inViewRef.current) {
+        el.pause();
+        return;
+      }
+      const p = el.play();
+      if (p !== undefined && typeof p.catch === 'function') p.catch(() => {});
+    };
+
+    document.addEventListener('visibilitychange', syncPlay);
+
+    let io;
+    if (typeof IntersectionObserver !== 'undefined') {
+      io = new IntersectionObserver(
+        ([entry]) => {
+          inViewRef.current = entry.isIntersecting;
+          if (entry.isIntersecting && !document.hidden) {
+            el.play()?.catch(() => {});
+          } else {
+            el.pause();
+          }
+        },
+        { root: null, threshold: 0.01, rootMargin: '80px 0px' }
+      );
+      io.observe(root);
+    }
+
+    return () => {
+      document.removeEventListener('visibilitychange', syncPlay);
+      io?.disconnect();
+    };
+  }, []);
+
   return (
-    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
+    <div
+      ref={wrapRef}
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-[#fffbfa]"
+      aria-hidden
+    >
       <video
         ref={videoRef}
         src={heroBgVideo}
@@ -57,10 +90,10 @@ const HeroBackdrop = () => {
         playsInline
         preload="auto"
         fetchPriority="high"
-        className="absolute left-1/2 top-1/2 min-h-full min-w-full h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.02] opacity-[0.62] [filter:saturate(0.75)_brightness(1.08)]"
+        className="hero-bg-video absolute left-1/2 top-1/2 min-h-full min-w-full h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover opacity-[0.55]"
       />
-      <div className="absolute inset-0 bg-[#fffbfa]/45" />
-      <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-[#fdf2f6]/55" />
+      <div className="absolute inset-0 bg-[#fffbfa]/40" />
+      <div className="absolute inset-0 bg-gradient-to-br from-white/35 via-transparent to-[#fdf2f6]/50" />
     </div>
   );
 };

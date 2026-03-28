@@ -133,6 +133,12 @@ h1 span {
   @apply rounded-lg border border-black/[0.06] p-6 md:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.04)];
 }
 
+/* Full-viewport <video>: avoid CSS filters on the element (very expensive). */
+.hero-bg-video {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
 @keyframes softRevealUp {
   from {
     opacity: 0;
