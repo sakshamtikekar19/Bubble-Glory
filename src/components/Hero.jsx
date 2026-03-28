@@ -85,6 +85,9 @@ const Hero = () => {
     return (
       <section className="relative min-h-[100dvh] pt-40 pb-12 px-5 flex flex-col justify-start gap-8">
         <div className="w-full max-w-[460px] mx-auto text-left">
+          <p className="text-[12px] md:text-sm font-medium text-[#6B6B6B] tracking-wide mb-3">
+            Elevate your daily bathing ritual
+          </p>
           <div className="flex items-center gap-3 mb-5">
             <span className="h-[1px] w-12 bg-[#C9A96E]/60"></span>
             <span className="text-[#C9A96E] text-[11px] tracking-[2.5px] uppercase">Est. 2024</span>
@@ -150,6 +153,12 @@ const Hero = () => {
         variants={calm ? undefined : { ...staggerParent, ...leftVariants }}
         className="w-full md:w-1/2 z-10 flex flex-col items-center md:items-start text-center md:text-left max-w-[460px] mx-auto md:mx-0"
       >
+        <motion.p
+          variants={calm ? undefined : fadeUp}
+          className="text-sm font-medium text-[#6B6B6B] tracking-wide mb-4 md:mb-5"
+        >
+          Elevate your daily bathing ritual
+        </motion.p>
         {/* EST */}
         <motion.div variants={calm ? undefined : fadeUp} className="flex items-center gap-3 mb-6">
           <span className="h-[1px] w-12 bg-[#C9A96E]/60"></span>

@@ -108,6 +108,10 @@ h1 span {
   color: #E8CFC4;
 }
 
+.luxury-text-glow {
+  text-shadow: 0 0 40px rgba(255, 193, 204, 0.35);
+}
+
 @keyframes softRevealUp {
   from {
     opacity: 0;
@@ -212,4 +216,12 @@ h1 span {
   .cta-breathe {
     animation: none !important;
   }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

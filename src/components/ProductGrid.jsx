@@ -85,7 +85,7 @@ const ProductCard = ({ product, onAddToCart, canHover }) => {
             onClick={() => onAddToCart(product)}
             className="flex-1 py-4 bg-gray-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-gray-800 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:scale-[1.03] hover:shadow-lg active:translate-y-0"
           >
-            <ShoppingCart size={16} /> QUICK ADD
+            <ShoppingCart size={16} /> Add to cart
           </button>
           <button className="w-12 h-12 bg-white text-gray-900 rounded-2xl flex items-center justify-center hover:bg-lavender transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1">
             <Eye size={18} />
@@ -126,11 +126,14 @@ const ProductGrid = ({ onAddToCart }) => {
   }, []);
 
   return (
-    <section className="py-20 md:py-28 px-5 sm:px-6 md:px-12 bg-[#FCF8F5]">
+    <section id="products" className="py-20 md:py-28 px-5 sm:px-6 md:px-12 bg-white">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
         <div>
-          <h2 className="font-bold text-gray-800 mb-4">Featured Products</h2>
-          <p className="text-gray-500 max-w-md">Explore handcrafted, artisanal soaps designed to elevate your everyday bathing ritual.</p>
+          <p className="text-[11px] uppercase tracking-[0.25em] text-[#C9A96E] mb-2">Best sellers</p>
+          <h2 className="font-serif font-medium text-gray-900 mb-3">Our bubble stars</h2>
+          <p className="text-gray-500 max-w-md text-[15px]">
+            Customer favourites — handcrafted bars and gift sets, ready to add to your ritual.
+          </p>
         </div>
         <div className="flex flex-wrap gap-3">
           {['All', 'Macaroon', 'Waffle', 'Gift Boxes'].map((cat) => (
@@ -152,10 +155,13 @@ const ProductGrid = ({ onAddToCart }) => {
         ))}
       </div>
 
-      <div className="mt-20 text-center">
-        <button className="px-8 sm:px-12 py-4 sm:py-5 border-2 border-gray-900 text-gray-900 rounded-full font-bold hover:bg-gray-900 hover:text-white transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:scale-[1.03]">
-          EXPLORE OUR SOAPS
-        </button>
+      <div className="mt-16 text-center">
+        <a
+          href="#products"
+          className="inline-flex px-8 sm:px-12 py-4 sm:py-5 border-2 border-gray-900 text-gray-900 rounded-full font-bold text-[12px] uppercase tracking-[1.5px] hover:bg-gray-900 hover:text-white transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        >
+          View all
+        </a>
       </div>
     </section>
   );

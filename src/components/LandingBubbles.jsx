@@ -18,7 +18,7 @@ const LandingBubbles = () => {
 
   const bubbles = useMemo(
     () =>
-      Array.from({ length: isMobile ? 20 : 14 }).map((_, i) => ({
+      Array.from({ length: isMobile ? 40 : 28 }).map((_, i) => ({
         id: i,
         size: isMobile ? 16 + (i % 5) * 9 : 10 + (i % 5) * 6,
         left: 6 + ((i * 7.3) % 88),
