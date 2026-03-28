@@ -1,44 +1,50 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
+import heroBgVideo from '../assets/hero-bg.mp4';
 
-const b = import.meta.env.BASE_URL;
-const HERO_VIDEO_SRC = b.endsWith('/') ? `${b}videos/hero-bg.mp4` : `${b}/videos/hero-bg.mp4`;
-
-/** Soft wash over video. Uses z-0 inside `isolate` section — negative z-index was hiding the layer. */
-const HeroBackdrop = ({ videoOn }) => {
+/**
+ * Bundled MP4 URL (Vite) so the file always resolves next to the JS chunk on GitHub Pages.
+ * Not gated on reduced-motion — ambient muted loops are treated separately from motion animations.
+ */
+const HeroBackdrop = () => {
   const videoRef = useRef(null);
 
   useEffect(() => {
     const el = videoRef.current;
-    if (!el || !videoOn) return;
+    if (!el) return;
     el.muted = true;
     el.defaultMuted = true;
-    const play = () => {
+    el.setAttribute('playsinline', '');
+    el.setAttribute('webkit-playsinline', '');
+
+    const tryPlay = () => {
       const p = el.play();
       if (p !== undefined && typeof p.catch === 'function') p.catch(() => {});
     };
-    play();
-    el.addEventListener('loadeddata', play);
-    return () => el.removeEventListener('loadeddata', play);
-  }, [videoOn]);
+    tryPlay();
+    el.addEventListener('loadeddata', tryPlay);
+    el.addEventListener('canplay', tryPlay);
+    return () => {
+      el.removeEventListener('loadeddata', tryPlay);
+      el.removeEventListener('canplay', tryPlay);
+    };
+  }, []);
 
   return (
     <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
-      {videoOn && (
-        <video
-          ref={videoRef}
-          src={HERO_VIDEO_SRC}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute left-1/2 top-1/2 h-full min-h-full w-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover opacity-[0.48] [filter:saturate(0.7)_brightness(1.12)]"
-        />
-      )}
-      <div className="absolute inset-0 bg-[#fffbfa]/58" />
-      <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-[#fff9f7]/30 to-[#fdf2f6]/65" />
+      <video
+        ref={videoRef}
+        src={heroBgVideo}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute left-1/2 top-1/2 min-h-full min-w-full h-full w-full -translate-x-1/2 -translate-y-1/2 object-cover scale-[1.02] opacity-[0.62] [filter:saturate(0.75)_brightness(1.08)]"
+      />
+      <div className="absolute inset-0 bg-[#fffbfa]/45" />
+      <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-[#fdf2f6]/55" />
     </div>
   );
 };
@@ -121,12 +127,11 @@ const Hero = () => {
   }, []);
 
   const calm = reduceMotion || isMobile;
-  const videoOn = !reduceMotion;
 
   if (isMobile) {
     return (
       <section className="relative isolate min-h-[100dvh] overflow-hidden pt-36 pb-12 px-5 flex flex-col justify-start gap-8">
-        <HeroBackdrop videoOn={videoOn} />
+        <HeroBackdrop />
         <div className="relative z-10 w-full max-w-[460px] mx-auto text-left">
           <p className="text-[12px] md:text-sm font-medium text-sass-muted tracking-wide mb-3 font-sans">
             Elevate your daily bathing ritual
@@ -189,7 +194,7 @@ const Hero = () => {
 
   return (
     <section className="relative isolate min-h-[100dvh] overflow-hidden pt-28 sm:pt-32 md:pt-40 pb-14 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
-      <HeroBackdrop videoOn={videoOn} />
+      <HeroBackdrop />
       {/* Left Content */}
       <motion.div
         initial={calm ? false : 'initial'}
