@@ -1,6 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+
+const HERO_VIDEO_SRC = `${import.meta.env.BASE_URL}videos/hero-bg.mp4`;
+
+/** Soft, airy wash over autoplay video — respects reduced motion (no video). */
+const HeroBackdrop = ({ videoOn }) => (
+  <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden>
+    {videoOn && (
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        className="absolute left-1/2 top-1/2 h-full min-h-full w-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover opacity-[0.22] [filter:saturate(0.55)_brightness(1.35)]"
+      >
+        <source src={HERO_VIDEO_SRC} type="video/mp4" />
+      </video>
+    )}
+    <div className="absolute inset-0 bg-[#fffbfa]/80" />
+    <div className="absolute inset-0 bg-gradient-to-br from-white/75 via-[#fff9f7]/45 to-[#fdf2f6]/88" />
+  </div>
+);
 
 const MagneticButton = ({ children, className, ...props }) => {
   const ref = useRef(null);
@@ -80,11 +102,13 @@ const Hero = () => {
   }, []);
 
   const calm = reduceMotion || isMobile;
+  const videoOn = !reduceMotion;
 
   if (isMobile) {
     return (
-      <section className="relative min-h-[100dvh] pt-36 pb-12 px-5 flex flex-col justify-start gap-8">
-        <div className="w-full max-w-[460px] mx-auto text-left">
+      <section className="relative min-h-[100dvh] overflow-hidden pt-36 pb-12 px-5 flex flex-col justify-start gap-8">
+        <HeroBackdrop videoOn={videoOn} />
+        <div className="relative z-10 w-full max-w-[460px] mx-auto text-left">
           <p className="text-[12px] md:text-sm font-medium text-sass-muted tracking-wide mb-3 font-sans">
             Elevate your daily bathing ritual
           </p>
@@ -114,7 +138,7 @@ const Hero = () => {
           </div>
         </div>
 
-        <div className="w-full max-w-[420px] mx-auto">
+        <div className="relative z-10 w-full max-w-[420px] mx-auto">
           <div className="relative w-full aspect-square bg-white rounded-2xl shadow-soft border border-black/[0.06] p-4 overflow-hidden">
             <img
               src="https://images.unsplash.com/photo-1605264964528-06403738d6dc?q=80&w=800&auto=format&fit=crop"
@@ -145,7 +169,8 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-[100dvh] pt-28 sm:pt-32 md:pt-40 pb-14 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
+    <section className="relative min-h-[100dvh] overflow-hidden pt-28 sm:pt-32 md:pt-40 pb-14 md:pb-20 px-4 sm:px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 touch-pan-y">
+      <HeroBackdrop videoOn={videoOn} />
       {/* Left Content */}
       <motion.div
         initial={calm ? false : 'initial'}
@@ -202,7 +227,7 @@ const Hero = () => {
       </motion.div>
 
       {/* Right Content - Floating Soap */}
-      <div className="w-full md:w-1/2 relative mt-8 md:mt-0 flex justify-center items-center">
+      <div className="relative z-10 w-full md:w-1/2 mt-8 md:mt-0 flex justify-center items-center">
         <motion.div
           initial={calm ? false : { opacity: 0, scale: 0.8, rotate: -10 }}
           animate={calm ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 1, scale: 1, rotate: 0 }}
